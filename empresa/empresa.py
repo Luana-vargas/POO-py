@@ -99,10 +99,9 @@ class Programador(Funcionario):
         self.salario_base_hora = 35
         self.horas_trabalhadas = carga_horaria_semanal * 4.5
 
-        if carga_horaria_semanal >= 20 and carga_horaria_semanal <= 40:
-            self.salario_mensal = self.calcula_salario()
-        else:
+        if not (carga_horaria_semanal >= 20 and carga_horaria_semanal <= 40):
             raise ValueError
+        
             
 
 
@@ -122,9 +121,7 @@ class Estagiario(Funcionario):
         self.auxilio_alimentacao = 250
         self.horas_trabalhadas = carga_horaria_semanal * 4.5
 
-        if carga_horaria_semanal >= 16 and carga_horaria_semanal <= 30:
-            self.salario_mensal = self.calcula_salario()
-        else:
+        if not (carga_horaria_semanal >= 16 and carga_horaria_semanal <= 30):
             raise ValueError
 
     def calcula_salario(self) -> float:
