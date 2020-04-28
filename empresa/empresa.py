@@ -34,6 +34,7 @@ class Funcionario(Pessoa):
         self.horas_trabalhadas = 0
         self.salario_base_hora = 0
         self.email = email
+        self.carga_horaria_semanal = carga_horaria_semanal
 
     def calcula_salario(self) -> float:
         '''
@@ -47,13 +48,13 @@ class Funcionario(Pessoa):
         altera a carga horária do funcionário, respeitando o limite de horas por categoria.
         Caso o numero informado seja inválido, levanta um ValueError
         '''
-        raise NotImplementedError
+        self.carga_horaria_semanal = nova_carga_horaria
 
     def consulta_carga_horaria(self) -> int:
         '''
         Devolve a carga horária de trabalho do funcionário
         '''
-        raise NotImplementedError
+        return self.carga_horaria_semanal
 
     def aumenta_salario(self) -> None:
         '''
@@ -101,9 +102,15 @@ class Programador(Funcionario):
 
         if not (carga_horaria_semanal >= 20 and carga_horaria_semanal <= 40):
             raise ValueError
-        
-            
 
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+       
+        if (nova_carga_horaria >= 20 and nova_carga_horaria <= 40):
+            super().altera_carga_horaria(nova_carga_horaria)
+        else:
+            raise ValueError
+            
+            
 
 class Estagiario(Funcionario):
     '''
@@ -126,6 +133,13 @@ class Estagiario(Funcionario):
 
     def calcula_salario(self) -> float:
         return super().calcula_salario() + self.auxilio_alimentacao
+
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+        
+            if (nova_carga_horaria >= 16 and nova_carga_horaria <= 30):
+                super().altera_carga_horaria(nova_carga_horaria)
+            else:
+                raise ValueError
 
         
 
@@ -153,6 +167,15 @@ class Vendedor(Funcionario):
         self.auxilio_transporte = 0
         self.horas_trabalhadas = carga_horaria_semanal * 4.5
 
+        if not (carga_horaria_semanal >= 15 and carga_horaria_semanal <= 45):
+            raise ValueError        
+
+    def consulta_visitas(self) -> int:
+        """
+        Retorna o número de visitas realizadas pelo vendedor até o momento
+        """
+        return self.visitas        
+
 
     def realizar_visita(self, n_visitas: int) -> None:
         '''
@@ -178,12 +201,20 @@ class Vendedor(Funcionario):
         de modo a começar a contagem para o mês seguinte.
         '''
         self.visitas = 0
+    
 
     def calcula_salario(self) -> float:
         '''
         Calcula o salário do mês para o funcionário
         '''
-        return super().calcula_salario() + self.auxilio_alimentacao + self.auxilio_transporte         
+        return super().calcula_salario() + self.auxilio_alimentacao + self.auxilio_transporte   
+
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+        
+            if (nova_carga_horaria >= 15 and nova_carga_horaria <= 45):
+                super().altera_carga_horaria(nova_carga_horaria)
+            else:
+                raise ValueError          
 
 
 class Empresa:
@@ -267,16 +298,3 @@ class Empresa:
                 funcionario.zerar_visitas()
         
 
-if __name__ == "__main__":
-    luana = Vendedor("luana", 24, "luana@luana", 40)
-    luana.realizar_visita(6) 
-    luana.aumenta_salario()
-    print("salario", luana.calcula_salario()) 
-    iterative = Empresa("iterative", "32323232", "TI")
-    iterative.contrata(luana)
-    neo = Programador("Anderson", 25, "neo@matrix.com", 40)
-    iterative.contrata(neo)
-    iterative.dissidio_anual()
-    print("folha: ", iterative.folha_pagamento())
-    print(iterative.listar_visitas())
-    iterative.zerar_visitas_vendedores()
