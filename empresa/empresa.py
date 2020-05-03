@@ -185,14 +185,22 @@ class Vendedor(Funcionario):
         se n_visitas é positivo e maior que zero, levantando um ValueError caso contrário.
         '''
 
-        is_int = type (n_visitas) is int
-        positivo = n_visitas > 0
+        # is_int = type (n_visitas) is int
+        # positivo = n_visitas > 0
 
-        if is_int and positivo:
-            self.visitas += n_visitas
-            self.auxilio_transporte += n_visitas * 30
+        # if is_int and positivo:
+        #     self.visitas += n_visitas
+        #     self.auxilio_transporte += n_visitas * 30
+        # else:
+        #     raise ValueError
+
+        if type (n_visitas) is not int:
+            raise TypeError
         else:
-            raise ValueError
+            if n_visitas <=0:
+                raise ValueError
+            self.visitas += n_visitas  
+            self.auxilio_transporte += n_visitas * 30      
 
 
     def zerar_visitas(self) -> None:
@@ -297,4 +305,3 @@ class Empresa:
             if type(funcionario) is Vendedor:
                 funcionario.zerar_visitas()
         
-
